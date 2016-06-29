@@ -1,3 +1,29 @@
+Release 9.0.0
+Changelog
+---------------------------------------
+- (WindowsRelease)    Updated Segger JLinkARM installer to Setup_JLinkV512g.exe
+
+- (Exe)     Provided better feedback when --eraseuicr operation fails due to missing pre-programmed ANT softdevice for nRF51.
+- (Exe)     Corrected minor bug in opening hex file in --program. If the user has no read permission on the file, a new error NoReadPermissionError is thrown, instead of InvalidHexFileError.
+- (Exe)     Modified error NrfjprogIniFormatError. That error was used in very different situations. Now possible errors of ini file parsing are NrfjprogIniCannotBeOpenedError, NrfjprogIniFamilyMissingError and NrfjprogIniClockspeedMissingError.
+- (Exe)     Modified parsing of nrfjprog.ini files to be performed only if needed.
+- (Exe)     Fixed --recover for nRF52 devices. In rare circumstances, --recover failed and did not unportect the device.
+
+- (Dll)     Added NRFJPROG_read_connected_emu_snr() function.
+- (Dll)     Fixed error in NRFJPPROG_recover() function. In rare circumstances, NRFJPPROG_recover() failed and did not unportect the device.
+- (Dll)     Documented a missing side-effect of NRFJPROG_recover() function for nRF51 devices. All peripherals will be reset.
+- (Dll)     Documented a missing side-effect of NRFJPROG_recover() function for nRF52 devices. If the device was readback protected, the RAM will be erased.
+- (Dll)     Added a side-effect to NRFJPROG_recover() function. Register RESETREAS in POWER peripheral will be cleared after the operation.
+- (Dll)     Added new possible error return in NRFJPROG_erase_uicr() NRFJPROG_erase_all functions for nRF51. Returning NOT_AVAILABLE_BECAUSE_MPU_CONFIG instead of NOT_AVAILABLE_BECAUSE_PROTECTION error.
+
+- (Python)  Moved MultiAPI class to its own module MultiAPI.py.
+- (Python)  Added read_connected_emu_snr() function.
+- (Python)  Added optional parameter encoding to rtt_read and rtt_write data. Different encodings can be now used to write and interpret the read data from the device. If None, they will not be interpreted.
+- (Python)  Corrected error in log functionality. Previous release changes set the default error output to sys.stdout.
+- (Python)  Corrected error in log functionality. Previous release had b'' in the log in Python 3.
+- (Python)  Added new possible error NOT_AVAILABLE_BECAUSE_MPU_CONFIG to API.NrfjprogdllErr enums.
+
+
 Release 8.5.0
 Changelog
 ---------------------------------------

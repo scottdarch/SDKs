@@ -12,18 +12,18 @@
 #ifndef NRFJPROG_H
 #define NRFJPROG_H
 
-#define major_version (8) 
-#define minor_version (5) 
+#define major_version (9) 
+#define minor_version (0) 
 #define micro_version (0) 
 
 
  enum NrfjprogErrorCodesType {
     
-	Success										= 0,				// Requested operation (operations) were successfully completed.
+	Success                                     = 0,				// Requested operation (operations) were successfully completed.
     
 	/* nrfjprog.exe or PC errors */
 	NrfjprogError								= 1,		        // An error condition that should not occur has happened. 
-														            // It is most probably a bug in nrfjprog.exe or nrfjprog.dll. 
+                                                                    // It is most probably a bug in nrfjprog.exe or nrfjprog.dll. 
 	NrfjprogOutdatedError						= 2,				// Nrfjprog version is too old for the device 
 	MemoryAllocationError						= 3,				// Memory allocation for nrfjprog failed failed.
 	
@@ -37,6 +37,8 @@
 	UnavailableOperationBecauseProtectionError	= 16,				// The operation attempted can not be performed because either the main-ap or the ctrl-ap is not available.
 	UnavailableOperationInFamilyError			= 17,				// The operation attempted can not be performed in the device because the feature is lacking in the device family.
 	WrongFamilyForDeviceError					= 18,				// The --family option given with the command (or the default from nrfjprog.ini) does not match the device connected.
+    UnavailableOperationBecauseMpuConfiguration = 19,               // For nRF51, --eraseuicr is unavailable unless the device came with an ANT softdevice programmed at Nordic factory.
+    
 
 	/* nrfjprog.dll errors */
     NrfjprogDllNotFoundError					= 20,				// Unable to find nrfjprog.dll in the installation folder. Reinstall nrfjprog.
@@ -46,8 +48,10 @@
 
 	/* nrfjprog.ini errors */
 	NrfjprogIniNotFoundError                    = 25,				// Unable to find nrfjprog.ini in the installation folder. Reinstall nrfjprog.
-	NrfjprogIniFormatError                      = 26,				// Format of nrfjprog.ini is incorrect
-	
+	NrfjprogIniCannotBeOpenedError              = 26,				// Opening the nrfjprog.ini file for read failed.
+	NrfjprogIniFamilyMissingError               = 27,				// Family parameter cannot be parsed from ini file. Line might be deleted or invalid format.
+	NrfjprogIniClockspeedMissingError           = 28,				// Family parameter cannot be parsed from ini file. Line might be deleted or invalid format.
+
 	/* JLinkARM.dll errors */
     JLinkARMDllNotFoundError					= 30,				// Unable to find install path for JLink software
 	JLinkARMDllInvalidError						= 31,				// Dll found does not seem a valid dll.
@@ -71,6 +75,7 @@
 	NVMCOperationError							= 57,				// The flash operation in the device failed.
 	FlashNotErasedError							= 58,				// A program operation failed because the area to write was not erased.
 	RamIsOffError								= 59,				// The RAM area to read or write is unpowered.
+	NoReadPermissionError                       = 60,               // Unable to open file for read.
 
 	/* Warning. Will not be returned by nrfjprog but used to generate warnings. */
 	FicrOperationWarning						= 100,				// FICR operation. It is important to be certain of what you do.

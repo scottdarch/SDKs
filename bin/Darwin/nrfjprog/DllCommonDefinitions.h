@@ -116,8 +116,9 @@ typedef enum
     /* Device issues. */
     NVMC_ERROR                                  = -20,
 
-    /* Access Port needed not available. */
+    /* Operation not available. */
     NOT_AVAILABLE_BECAUSE_PROTECTION            = -90,
+    NOT_AVAILABLE_BECAUSE_MPU_CONFIG            = -91,
     
     /* JlinkARM DLL errors. */
     JLINKARM_DLL_NOT_FOUND                      = -100,

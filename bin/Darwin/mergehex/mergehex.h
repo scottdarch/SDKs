@@ -13,8 +13,8 @@
 #define MERGEHEX_H
 
 //@TODO: Have the build system update this.
-#define major_version (8) 
-#define minor_version (5) 
+#define major_version (9) 
+#define minor_version (0) 
 #define micro_version (0) 
 
 enum MergehexErrorCodesType {

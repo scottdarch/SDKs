@@ -177,6 +177,22 @@ nrfjprogdll_err_t NRFJPROG_connect_to_emu_without_snr(uint32_t clock_speed_in_kh
 
 
 /**
+ * @brief   Reads the serial number of the emulator connected to.
+ *
+ * @details Reads the serial number of the emulator connected to.
+ *
+ * @pre     Before the execution of this function, the dll must be open. To open the dll, see NRFJPROG_open_dll() function.
+ * @pre     Before the execution of this function, a connection to the emulator must be established. To establish a connection, see NRFJPROG_connect_to_emu_with_snr() and NRFJPROG_connect_to_emu_without_snr() functions.
+ *
+ * @retval  SUCCESS
+ * @retval  INVALID_OPERATION                   The NRFJPROG_open_dll() function has not been called.
+ *                                              The NRFJPROG_connect_to_emu_with_snr() or NRFJPROG_connect_to_emu_without_snr() function has not been called.
+ * @retval  INVALID_PARAMETER                   The serial_number pointer is NULL.
+ */
+nrfjprogdll_err_t NRFJPROG_read_connected_emu_snr(uint32_t * serial_number);
+
+
+/**
  * @brief   Disconnects from an emulator.
  *
  * @details This function disconnects from a connected emulator. This also disconnects from a connected device if connected. Will
@@ -208,6 +224,9 @@ nrfjprogdll_err_t NRFJPROG_disconnect_from_emu(void);
  * @post    After the execution of this function, the device CPU will be halted. To unhalt the device CPU, see NRFJPROG_pin_reset(), NRFJPROG_go() and NRFJPROG_run() functions.
  * @post    After the execution of this function, all device RAM will be powered. To unpower the device RAM, see NRFJPROG_unpower_ram_section() function.
  * @post    After the execution of this function, the device user available code and UICR flash will be erased.
+ * @post    After the execution of this function, all peripherals will be reset.
+ * @post    After the execution of this function, if the device was readback protected, the device will no longer be readback protected.
+ * @post    After the execution of this function, the POWER.RESETREAS register will be cleared. Due to PAN-41, Lockup reset may be present for your device.
  *
  * @retval  SUCCESS
  * @retval  INVALID_OPERATION                   The NRFJPROG_open_dll() function has not been called.
@@ -433,7 +452,7 @@ nrfjprogdll_err_t NRFJPROG_disable_bprot(void);
  *                                              The NRFJPROG_connect_to_emu_with_snr() or NRFJPROG_connect_to_emu_without_snr() function has not been called.
  * @retval  JLINKARM_DLL_ERROR                  The JLinkARM DLL function returned an error.
  * @retval  NVMC_ERROR                          Flash operation failed.
- * @retval  NOT_AVAILABLE_BECAUSE_PROTECTION    The operation is not available due to factory programmed code.
+ * @retval  NOT_AVAILABLE_BECAUSE_MPU_CONFIG    The operation is not available due to the MPU configuration. The operation is not available due to the presence of Pre-Programmed Factory Code (PPFC). 
  * @retval  CANNOT_CONNECT                      It is impossible to connect to any nRF device.
  */
 nrfjprogdll_err_t NRFJPROG_erase_all(void);
@@ -484,7 +503,7 @@ nrfjprogdll_err_t NRFJPROG_erase_page(uint32_t addr);
  *                                              The NRFJPROG_connect_to_emu_with_snr() or NRFJPROG_connect_to_emu_without_snr() function has not been called.
  * @retval  JLINKARM_DLL_ERROR                  The JLinkARM DLL function returned an error.
  * @retval  NVMC_ERROR                          Flash operation failed.
- * @retval  NOT_AVAILABLE_BECAUSE_PROTECTION    The operation is not available due to absence of factory programmed code.
+ * @retval  NOT_AVAILABLE_BECAUSE_MPU_CONFIG    The operation is not available due to the MPU configuration. The operation is not available due to the absence of Pre-Programmed Factory Code (PPFC). 
  * @retval  CANNOT_CONNECT                      It is impossible to connect to any nRF device.
  */
 nrfjprogdll_err_t NRFJPROG_erase_uicr(void);

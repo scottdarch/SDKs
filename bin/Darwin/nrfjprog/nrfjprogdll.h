@@ -71,6 +71,14 @@ nrfjprogdll_err_t NRFJPROG_connect_to_emu_without_snr(uint32_t clock_speed_in_kh
 
 
 /**
+ * @brief   Reads the serial number of the emulator connected to.
+ *
+ * @details For further details, see the device family header file.
+ */
+nrfjprogdll_err_t NRFJPROG_read_connected_emu_snr(uint32_t * serial_number);
+
+
+/**
  * @brief   Disconnects from an emulator.
  *
  * @details For further details, see the device family header file.

@@ -175,6 +175,22 @@ nrfjprogdll_err_t NRFJPROG_connect_to_emu_without_snr(uint32_t clock_speed_in_kh
 
 
 /**
+ * @brief   Reads the serial number of the emulator connected to.
+ *
+ * @details Reads the serial number of the emulator connected to.
+ *
+ * @pre     Before the execution of this function, the dll must be open. To open the dll, see NRFJPROG_open_dll() function.
+ * @pre     Before the execution of this function, a connection to the emulator must be established. To establish a connection, see NRFJPROG_connect_to_emu_with_snr() and NRFJPROG_connect_to_emu_without_snr() functions.
+ *
+ * @retval  SUCCESS
+ * @retval  INVALID_OPERATION                   The NRFJPROG_open_dll() function has not been called.
+ *                                              The NRFJPROG_connect_to_emu_with_snr() or NRFJPROG_connect_to_emu_without_snr() function has not been called.
+ * @retval  INVALID_PARAMETER                   The serial_number pointer is NULL.
+ */
+nrfjprogdll_err_t NRFJPROG_read_connected_emu_snr(uint32_t * serial_number);
+
+
+/**
  * @brief   Disconnects from an emulator.
  *
  * @details This function disconnects from a connected emulator. This also disconnects from a connected device if connected. Will
@@ -199,7 +215,9 @@ nrfjprogdll_err_t NRFJPROG_disconnect_from_emu(void);
  * @brief   Recovers the device.
  *
  * @details This operation attempts to recover the device and leave it as it was when it left Nordic factory. It will attempt to
- *          connect, erase all user available flash, halt and eliminate any protection.
+ *          connect, erase all user available flash, halt and eliminate any protection. Note that this operation may take up to 30 s
+ *          if the device was readback protected. Note as well that this function only affects flash and CPU, but does not reset or 
+ *          stop any peripheral or oscillator source. The operation will therefore leave the watchdog still operational.
  *
  * @pre     Before the execution of this function, the dll must be open. To open the dll, see NRFJPROG_open_dll() function.
  * @pre     Before the execution of this function, a connection to the emulator must be established. To establish a connection, see NRFJPROG_connect_to_emu_with_snr() and NRFJPROG_connect_to_emu_without_snr() functions.
@@ -209,6 +227,9 @@ nrfjprogdll_err_t NRFJPROG_disconnect_from_emu(void);
  * @post    After the execution of this function, the device CPU will be halted. To unhalt the device CPU, see NRFJPROG_pin_reset(), NRFJPROG_debug_reset(),  NRFJPROG_go() and NRFJPROG_run() functions.
  * @post    After the execution of this function, all device RAM will be powered. To unpower the device RAM, see NRFJPROG_unpower_ram_section() function.
  * @post    After the execution of this function, the device code and UICR flash will be erased.
+ * @post    After the execution of this function, if the device was readback protected, the device RAM will be erased.
+ * @post    After the execution of this function, if the device was readback protected, the device will no longer be readback protected.
+ * @post    After the execution of this function, the POWER.RESETREAS register will be cleared.
  *
  * @retval  SUCCESS
  * @retval  INVALID_OPERATION                   The NRFJPROG_open_dll() function has not been called.
